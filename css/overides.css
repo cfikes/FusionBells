@@ -1,0 +1,23 @@
+.btndark {
+    height: 28px;
+    padding: 5px 8px;
+    border: 1px solid #242424;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -khtml-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    background: #4f4f4f;
+    background-image: -ms-linear-gradient(top, #4f4f4f 0%, #000000 100%);
+    background-image: -moz-linear-gradient(top, #4f4f4f 0%, #000000 100%);
+    background-image: -o-linear-gradient(top, #4f4f4f 0%, #000000 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4f4f4f), color-stop(1, #000000));
+    background-image: -webkit-linear-gradient(top, #4f4f4f 0%, #000000 100%);
+    background-image: linear-gradient(to bottom, #4f4f4f 0%, #000000 100%);
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 11px;
+    vertical-align: middle;
+}

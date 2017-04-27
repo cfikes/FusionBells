@@ -43,6 +43,8 @@ else {
 
 ?>
 
+<link rel="stylesheet" type="text/css" href="css/overides.css">
+
 <?php
 /*
 * Zone Domains

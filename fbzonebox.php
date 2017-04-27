@@ -44,7 +44,7 @@ else {
 	//FB Includes
 	require_once "includes.php";
 ?>
-
+<link rel="stylesheet" type="text/css" href="css/overides.css">
 
 <?php
 function getSyncLog(){

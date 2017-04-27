@@ -44,6 +44,7 @@ else {
 	//FB Includes
 	require_once "includes.php";
 ?>
+<link rel="stylesheet" type="text/css" href="css/overides.css">
 
 <table width='100%' border='0' cellpadding='0' cellspacing='0'>
 	<tr>

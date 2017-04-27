@@ -46,7 +46,8 @@ else {
 ?>
 
 <link rel='stylesheet prefetch' href='css/fullcalendar.min.css'>
-	
+<link rel="stylesheet" type="text/css" href="css/overides.css">
+
 <style>
 	.fc-event {
 		margin: 5px 0px;

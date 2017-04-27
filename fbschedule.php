@@ -42,7 +42,7 @@ else {
 	$document['title'] = $text['title-fusionbells'];
 	
 ?>
-
+<link rel="stylesheet" type="text/css" href="css/overides.css">
 
 <?php 
 /*
