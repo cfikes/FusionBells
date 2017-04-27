@@ -45,6 +45,7 @@ else {
 * 03/05/2017
 */
 
+
 //Functions for query
 function pullSettings(){
 	//Begin Session
@@ -238,6 +239,7 @@ function pullSettings(){
 //show the content
 	require_once "resources/header.php";
 	$document['title'] = $text['title-fusionbells'];
+	echo '<link rel="stylesheet" type="text/css" href="css/overides.css">';
 
 
 	//header
