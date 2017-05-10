@@ -10,6 +10,31 @@ function selectTone(){
     }
 }
 
+function selectZone(){
+    //Begin Session
+	session_start();
+    //GET UUID
+    $UUID = $_SESSION["domain_uuid"];
+    try {
+        //Connect to DB
+        $fusionBellDB = new PDO("sqlite:$UUID.db");
+        //Ask for just unique values from schedules table
+        $Result = $fusionBellDB->query("SELECT distinct ZoneName FROM zones ORDER BY ZoneName ASC;");
+        //If any results continue
+        if(count($Result,0) != 0) {
+            //For each returned result append array 
+            foreach($Result as $row){
+				echo '<option value="'. $row['ZoneName'] . '">'. $row['ZoneName'] . '</option>';
+            }
+        }//End if any results continue
+    }//End Try
+    //Issues connecting
+    catch (PDOException $e) {
+        //Set JSON Message with Error Text
+        echo $e->getMessage();
+    }
+}
+
 //For Calendar View
 function getSchedulesInclude(){
     //Begin Session
@@ -54,12 +79,13 @@ function domainDB(){
 			$fusionBellDB = new PDO("sqlite:$UUID.db");
 			//Create Tables
 			$fusionBellDB->exec("CREATE TABLE IF NOT EXISTS settings (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, SettingName TEXT NOT NULL UNIQUE, SettingValue TEXT NOT NULL)");
-			$fusionBellDB->exec("CREATE TABLE IF NOT EXISTS schedules (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Schedule TEXT NOT NULL, Time TEXT NOT NULL, Tone TEXT NOT NULL)");
+			$fusionBellDB->exec("CREATE TABLE IF NOT EXISTS zones (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ZoneName TEXT NOT NULL UNIQUE, ZoneValue TEXT NOT NULL)");
+			$fusionBellDB->exec("CREATE TABLE IF NOT EXISTS schedules (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Schedule TEXT NOT NULL, Time TEXT NOT NULL, Tone TEXT NOT NULL, Zone TEXT)");
 			$fusionBellDB->exec("CREATE TABLE IF NOT EXISTS calendar (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Date TEXT NOT NULL, Schedule TEXT NOT NULL)");
 			$fusionBellDB->exec("CREATE TABLE IF NOT EXISTS zoneboxsync (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Address TEXT NOT NULL, Date TEXT NOT NULL, Time TEXT NOT NULL, Schedule TEXT NOT NULL)");
 			//Insert Sample Schedule
-			$fusionBellDB->exec("INSERT INTO schedules (Schedule, Time, Tone) VALUES ('Sample Schedule', '23:59','NO_TONE.WAV')");
-			$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('All Tone Address','239.255.0.1:4100')");
+			$fusionBellDB->exec("INSERT INTO schedules (Schedule, Time, Tone, Zone) VALUES ('Sample Schedule', '23:59','NO_TONE.WAV','All Tone')");
+			//$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('All Tone Address','239.255.0.1:4100')");
 			$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('Default Schedule','Sample Schedule')");
 			$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('Bell Tone','DefaultTone.wav')");
 			$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('Fire Drill Tone','DefaultTone.wav')");
@@ -67,7 +93,9 @@ function domainDB(){
 			$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('Weather Drill Tone','DefaultTone.wav')");
 			$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('Weather Tone','DefaultTone.wav')");
 			$fusionBellDB->exec("INSERT INTO settings (SettingName,SettingValue) VALUES ('Acting ZoneBOX','Enabled')");
-			
+			//Added for Zoning
+			$fusionBellDB->exec("INSERT INTO zones (ZoneName,ZoneValue) VALUES ('All Tone','239.255.0.1:4100')");
+			$fusionBellDB->exec("INSERT INTO zones (ZoneName,ZoneValue) VALUES ('Sample Zone','239.255.0.1:4101')");
 		}
 		//Issues connecting
 		catch (PDOException $e) {

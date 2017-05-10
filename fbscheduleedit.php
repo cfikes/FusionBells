@@ -131,7 +131,7 @@ else {
 
             <table name="thisSchedule" id="thisSchedule" class="table table-hover">
                 <thead>
-                    <th class="col-xs-3">Time</th><th>Tone</th>
+                    <th class="col-xs-3">Time</th><th>Tone</th><th>Zone</th>
                 </thead>
                 <tbody>
                     
@@ -157,11 +157,12 @@ else {
         <div class="modal-body">
             <div class="row">
                 <table class="table table-condensed table-borderless">
-                    <th class="col-xs-3">Hour</th><th class="col-xs-3">Minute</th><th>Ring Tone</th>
+                    <th class="col-xs-3">Hour</th><th class="col-xs-3">Minute</th><th>Ring Tone</th><th>Zone</th>
                     <tr>
                         <td><input class="form-control" id="hour" type="text" value="00" name="hour"></td>
                         <td><input class="form-control" id="minute" type="text" value="00" name="minute"></td>
                         <td><select class="form-control" id="tone"><?php selectTone(); ?></select></td>
+						<td><select class="form-control" id="zone"><?php selectZone(); ?></select></td>
                     </tr>
                     </table>
             </div>
@@ -187,13 +188,21 @@ else {
             <h4 class="modal-title" id="gridSystemModalLabel">Delete Bell</h4>
         </div>
         <div class="modal-body">
-                <form class="form-inline">
-                        <input class="form-control" type="text" id="delmodaltime" disabled>
-                        <input class="form-control" type="text" id="delmodaltone" disabled>
-                </form>
+                <!--<form class="form-inline">-->
+				<div class="row">
+                <table class="table table-condensed table-borderless">
+                    <th class="col-xs-3">Time</th><th>Ring Tone</th><th>Zone</th>
+                    <tr>
+                        <td><input class="form-control" type="text" id="delmodaltime" disabled></td>
+                        <td><input class="form-control" type="text" id="delmodaltone" disabled></td>
+						<td><input class="form-control" type="text" id="delmodalzone" disabled></td>
+					</tr>
+				</table>
+				</div>
+                <!--</form>-->
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btndark" data-dismiss="modal" onclick='delRow($("#delmodaltime").val());'>Delete Bell</button>
+            <button type="button" class="btn btndark" data-dismiss="modal" onclick='delRow($("#delmodaltime").val(), $("#delmodalzone").val());'>Delete Bell</button>
         </div>
         </div>
     </div>
@@ -298,9 +307,10 @@ else {
             //Setup Variables for row creation
             var sentTime = hour+":"+minute;
             var sentTone = $("#tone").val();
-            var sentNewBell = newBell(sentTime,sentTone);
+			var sentZone = $("#zone").val();
+            var sentNewBell = newBell(sentTime,sentTone,sentZone);
             //Create row
-            row = "<tr id=\"" + hour + ":" + minute + "\" tone=\"" + $("#tone").val() + "\"><td>" + hour + ":" + minute + "</td><td>" + $("#tone").val() + "</td></tr>";
+            row = "<tr id=\"" + hour + ":" + minute + "\" tone=\"" + $("#tone").val() + "\" zone=\"" + $("#zone").val() + "\"><td>" + hour + ":" + minute + "</td><td>" + $("#tone").val() + "</td><td>" + $("#zone").val() + "</td></tr>";
             $('#thisSchedule').children('tbody').append(row);
             //Sort entries after new added
             sortTable();
@@ -309,6 +319,7 @@ else {
 			$("#hour").val("0");
 			$("#minute").val("0");
 			$("#tone").val("");
+			$("#zone").val("");
         }
 
 
@@ -318,9 +329,9 @@ else {
         * Christopher Fikes
         * 03/03/2017
         */
-        function delRow(rowid){   
+        function delRow(rowid,zone){   
             var row = document.getElementById(rowid);
-            var del = deleteBell(rowid);
+            var del = deleteBell(rowid,zone);
             row.parentNode.removeChild(row);
         }
 
@@ -347,7 +358,7 @@ else {
                         var working = this.Time.split(':');
                         var hour = working[0];
                         var minute = working[1];
-                        var row = "<tr id=\"" + this.Time + "\" tone=\"" + this.Tone + "\"><td>" + this.Time + "</td><td>" + this.Tone + "</td></tr>";
+                        var row = "<tr id=\"" + this.Time + "\" tone=\"" + this.Tone + "\" zone=\"" + this.Zone + "\"><td>" + this.Time + "</td><td>" + this.Tone + "</td><td>" + this.Zone + "</td></tr>";
                         $('#thisSchedule').children('tbody').append(row);
                     });   
                 }
@@ -447,7 +458,7 @@ else {
         * Christopher Fikes
         * 03/03/2017
         */
-        function deleteBell(time) {
+        function deleteBell(time,zone) {
             var name = $("#currentSchedule").html();
             //Make Request to API with AJAX for deletion
             $.ajax({
@@ -455,7 +466,7 @@ else {
                 'url' : "../fusionbells/api.php",
                 'context' : document.body,
                 'dataType' : 'json',
-                'data' : { "call" : "delbell" , "schedulename" : name ,"time" : time},
+                'data' : { "call" : "delbell" , "schedulename" : name ,"time" : time,"zone" : zone},
                 'success' : function (data) {
                     //Console log return
                     console.log(data);
@@ -472,7 +483,7 @@ else {
         * Christopher Fikes
         * 03/03/2017
         */
-        function newBell(time,tone) {
+        function newBell(time,tone,zone) {
             //Currently selected schedule
             var name = $("#currentSchedule").html();
             //MAke request to API over AJAX for new bell creation
@@ -481,7 +492,7 @@ else {
                 'url' : "../fusionbells/api.php",
                 'context' : document.body,
                 'dataType' : 'json',
-                'data' : { "call" : "newbell" , "schedulename" : name ,"time" : time, "tone" : tone},
+                'data' : { "call" : "newbell" , "schedulename" : name ,"time" : time, "tone" : tone, "zone" : zone},
                 'success' : function (data) {
                     //Console log return
                     console.log(data);
@@ -502,6 +513,7 @@ else {
         $(document).on( "click", "#thisSchedule tr", function() {
             $("#delmodaltime").val(this.getAttribute("id"));
             $("#delmodaltone").val(this.getAttribute("tone"));
+			$("#delmodalzone").val(this.getAttribute("zone"));
             $('#delBellModal').modal('show');
         }); 
 

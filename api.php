@@ -285,11 +285,11 @@ function manualBell() {
 		//This is the ZoneBox
 		elseif ($Setting == "Enabled") {
 			//Query Multicast address to use
-			$Result = $fusionBellDB->query("SELECT SettingValue FROM settings WHERE SettingName = 'All Tone Address' LIMIT 1;");
+			$Result = $fusionBellDB->query("SELECT ZoneValue FROM zones WHERE ZoneName = 'All Tone' LIMIT 1;");
 			//Set value is any return given
 			if(count($Result,0) != 0) {
 				foreach($Result as $row){
-					$address = $row['SettingValue'];
+					$address = $row['ZoneValue'];
 				}
 			}
 			//Call System command with specified parameters
@@ -332,7 +332,7 @@ function getSchedule() {
             //Connect to DB
             $fusionBellDB = new PDO("sqlite:$UUID.db");
             //Query for specified schedule
-            $Result = $fusionBellDB->prepare('SELECT Schedule,Time,Tone FROM schedules WHERE Schedule = ? ORDER BY Time');
+            $Result = $fusionBellDB->prepare('SELECT Schedule,Time,Tone,Zone FROM schedules WHERE Schedule = ? ORDER BY Time');
             $Result->execute(array($schedule));
             //If any results continue
             if(count($Result,0) != 0) {
@@ -358,6 +358,89 @@ function getSchedule() {
     } //End Else no Errors
 } //End getSchedule function
 
+
+/*
+* Get all zones and return as formated JSON
+*
+* Christopher Fikes
+* 05/09/2017
+*/
+function getZones(){
+    //Begin Session
+	session_start();
+    //GET UUID
+    $UUID = $_SESSION["domain_uuid"];
+    try {
+        //Connect to DB
+        $fusionBellDB = new PDO("sqlite:$UUID.db");
+        //Ask for just unique values from schedules table
+        $Result = $fusionBellDB->query("SELECT distinct ZoneName FROM zones ORDER BY Schedule ASC;");
+        //If any results continue
+        if(count($Result,0) != 0) {
+            //Setup Counter
+            $i = 0;
+            //For each returned result append array 
+            foreach($Result as $row){
+                $returnJSON[$i] = $row;
+                $i++;
+            }
+            //Return array as formated JSON
+            header('Content-Type: application/json');
+            echo json_encode($returnJSON);
+        }//End if any results continue
+    }//End Try
+    //Issues connecting
+    catch (PDOException $e) {
+        //Set JSON Message with Error Text
+        $returnValue = [ "msg" => "error", "error" => $e->getMessage() ];
+        header('Content-Type: application/json');
+        echo json_encode($returnValue);
+    }
+}
+
+
+
+/*
+* Deletes zone and attached schedules
+*
+* Christopher Fikes
+* 05/09/2017
+*/
+function delZone(){
+	//Begin Session
+	session_start();
+    //GET UUID
+    $UUID = $_SESSION["domain_uuid"];
+    //Sets name from POST
+	$name = $_POST['zonename'];
+    if(is_null($name) || $name == ""){ 
+        $returnValue = ['error' => 'no values input for delZone'];
+        header('Content-Type: application/json');
+        echo json_encode($returnValue);
+    } else {
+        try {
+            //Connect to DB
+            $fusionBellDB = new PDO("sqlite:$UUID.db");
+            //Del zone with post vars
+			$delZone = $fusionBellDB->prepare('DELETE FROM zones WHERE ZoneName = ?');
+            //Bind Parameters for Query and Execute
+            $delZone->execute(array($name));
+			$delSchedule = $fusionBellDB->prepare('DELETE FROM schedules WHERE Zone = ?');
+            //Bind Parameters for Query and Execute
+            $delSchedule->execute(array($name));
+            //Return results as formated JSON
+            $returnValue = ['Status' => "complete"];
+            echo json_encode($returnValue);
+        }//End Try DB code
+        //Issues connecting
+        catch (PDOException $e) {
+            //Set JSON Message with Error Text
+            $returnValue = [ "msg" => "error", "error" => $e->getMessage() ];
+            header('Content-Type: application/json');
+            echo json_encode($returnValue);
+        }//End catch
+    }//End Else no errors
+}//End delZone
 
 
 /*
@@ -509,6 +592,7 @@ function deleteBell(){
     //Get Schedule name and time form POST
     $name = $_POST['schedulename'];
     $time = $_POST['time'];
+	$zone = $_POST['zone'];
     //Check for empty values and send back error
     if(is_null($name) || is_null($time) || $name == "" || $time == ""){ 
         $returnValue = ['error' => 'no values input for Delete Schedule'];
@@ -519,8 +603,8 @@ function deleteBell(){
             //Connect to DB
             $fusionBellDB = new PDO("sqlite:$UUID.db");
             //Delete bell from above reference
-            $Result = $fusionBellDB->prepare('DELETE FROM schedules WHERE Schedule = ? AND Time = ?');
-            $Result->execute(array($name,$time));
+            $Result = $fusionBellDB->prepare('DELETE FROM schedules WHERE Schedule = ? AND Time = ? AND Zone = ?');
+            $Result->execute(array($name,$time,$zone));
             //Return Formated JSON
             $returnValue = ['Status' => "Completed"];
             echo json_encode($returnValue);
@@ -553,8 +637,9 @@ function newBell(){
     $name = $_POST['schedulename'];
     $time = $_POST['time'];
     $tone = $_POST['tone'];
+	$zone = $_POST['zone'];
     //Check for empty values and send back error
-    if(is_null($name) || $name == "" || is_null($time) || $time == "" || is_null($tone) || $tone == ""){ 
+    if(is_null($name) || $name == "" || is_null($time) || $time == "" || is_null($tone) || $tone == "" || is_null($zone) || $zone == ""){ 
         $returnValue = ['error' => 'no values input for New Bell'];
         header('Content-Type: application/json');
         echo json_encode($returnValue);
@@ -563,8 +648,8 @@ function newBell(){
             //Connect to DB
             $fusionBellDB = new PDO("sqlite:$UUID.db");
             //Insert into Schedules New Bell
-            $Result = $fusionBellDB->prepare('INSERT INTO schedules (Schedule,Time,Tone) VALUES (?,?,?)');
-            $Result->execute(array($name,$time,$tone));
+            $Result = $fusionBellDB->prepare('INSERT INTO schedules (Schedule,Time,Tone,Zone) VALUES (?,?,?,?)');
+            $Result->execute(array($name,$time,$tone,$zone));
             //Return Formated JSON
             $returnValue = ['Status' => 'Completed'];
             echo json_encode($returnValue);
@@ -623,6 +708,96 @@ function saveSetting(){
         }//End of Catch
     }//End of Else of Bad POST Data
 }//End of saveSetting Function
+
+
+/*
+* Save Zone
+*
+* Christopher Fikes
+* 05/10/2017
+*/
+function saveZone(){
+    //Begin Session
+	session_start();
+    //GET UUID
+    $UUID = $_SESSION["domain_uuid"];
+ //Grab POST Values
+    $zoneName = $_POST['zoneName'];
+    $zoneValue = $_POST['zoneValue'];
+    //Check if values are null, return error if so.
+    if( is_null($zoneName) || is_null($zoneValue) || $zoneName == "" || $zoneValue == "" ){ 
+        //Create JSON Message of Error
+        $returnValue = ['msg' => 'error', "error" => "Empty Values Sent"];
+        header('Content-Type: application/json');
+        echo json_encode($returnValue);
+    }//End Check Values
+    else {
+        try {
+            //Connect to DB and insert posted Values
+            $fusionBellDB = new PDO("sqlite:$UUID.db");
+            $Return = $fusionBellDB->prepare('UPDATE zones SET ZoneValue = ? WHERE ZoneName = ?');
+            //Bind Parameters for Query and Execute
+            $Return->execute(array($zoneValue,$zoneName));
+            //Create JSON Message with Record Values
+            $returnValue = ['msg' => 'complete'];
+            header('Content-Type: application/json');
+            echo json_encode($returnValue);
+        }//End of Try
+        //Issues connecting
+        catch (PDOException $e) {
+            //Set JSON Message with Error Text
+            $returnValue = [ "msg" => "error", "error" => $e->getMessage() ];
+            header('Content-Type: application/json');
+            echo json_encode($returnValue);
+        }//End of Catch
+    }//End of Else of Bad POST Data
+}//End of saveZone Function
+
+
+
+
+/*
+* New Zone
+*
+* Christopher Fikes
+* 05/10/2017
+*/
+function createNewZone(){
+    //Begin Session
+	session_start();
+    //GET UUID
+    $UUID = $_SESSION["domain_uuid"];
+ //Grab POST Values
+    $zoneName = $_POST['zoneName'];
+    $zoneValue = $_POST['zoneValue'];
+    //Check if values are null, return error if so.
+    if( is_null($zoneName) || is_null($zoneValue) || $zoneName == "" || $zoneValue == "" ){ 
+        //Create JSON Message of Error
+        $returnValue = ['msg' => 'error', "error" => "Empty Values Sent"];
+        header('Content-Type: application/json');
+        echo json_encode($returnValue);
+    }//End Check Values
+    else {
+        try {
+            //Connect to DB and insert posted Values
+            $fusionBellDB = new PDO("sqlite:$UUID.db");
+            $Return = $fusionBellDB->prepare('INSERT INTO zones (ZoneName,ZoneValue) VALUES (?,?)');
+            //Bind Parameters for Query and Execute
+            $Return->execute(array($zoneName,$zoneValue));
+            //Create JSON Message with Record Values
+            $returnValue = ['msg' => 'complete'];
+            header('Content-Type: application/json');
+            echo json_encode($returnValue);
+        }//End of Try
+        //Issues connecting
+        catch (PDOException $e) {
+            //Set JSON Message with Error Text
+            $returnValue = [ "msg" => "error", "error" => $e->getMessage() ];
+            header('Content-Type: application/json');
+            echo json_encode($returnValue);
+        }//End of Catch
+    }//End of Else of Bad POST Data
+}//End of saveZone Function
 
 
 
@@ -913,8 +1088,8 @@ function sendOfflineSchedule() {
 				//Connect to DB
 				$fusionBellDB = new PDO("sqlite:$UUID.db");
 				//Query for specified schedule
-				$Result = $fusionBellDB->prepare('SELECT Schedule,Time,Tone FROM schedules WHERE Schedule = ? ORDER BY Time');
-				$Result->execute(array($schedule));
+				$Result = $fusionBellDB->prepare('SELECT Schedule,Time,Tone FROM schedules WHERE Schedule = ? AND Zone = ? ORDER BY Time');
+				$Result->execute(array($schedule,"All Tone"));
 				//If any results continue
 				if(count($Result,0) != 0) {
 					//Setup Counter
@@ -984,6 +1159,9 @@ if (!empty($_POST)) {
         case 'savesetting' :
             saveSetting();
             break;
+		case 'savezone' :
+            saveZone();
+            break;
         case 'gettones' :
             getTones();
             break;
@@ -1001,6 +1179,15 @@ if (!empty($_POST)) {
             break;
 		case 'offlineschedule' :
 			sendOfflineSchedule();
+			break;
+		case 'getzones' :
+			getZones();
+			break;
+		case 'delzone' :
+			delZone();
+			break;
+		case 'newzone' :
+			createNewZone();
 			break;
     }
 } else {

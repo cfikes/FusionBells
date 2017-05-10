@@ -251,6 +251,7 @@ function pullSettings(){
 	echo "</td>\n";
 	echo "<td width='50%' align='right'>\n";
 	echo "<a href='fusionbells.php' class='btn btndark'>Dashboard</a> ";
+	echo "<a href='fbpagezones.php' class='btn btndark'>Zones</a> ";
 	echo "<a href='fbtones.php' class='btn btndark'>Tone Editor</a> ";
 	echo "<a href='fbzonebox.php' class='btn btndark'>ZoneBox</a> ";
 	echo "</td></tr>";	
