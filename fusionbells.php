@@ -56,34 +56,21 @@ else {
 	domainDB();
 ?>
 
-
-<table width='100%' border='0' cellpadding='0' cellspacing='0'>
-	<tr>
-		<td width='50%'>
-			<b>Fusion Bells</b><br><br>
-		</td>
-		<td width='50%' align='right'>
-			<a href='fbschedule.php'><button class='btn btndark'>Schedule Calendar</button></a> 
-			<a href='fbscheduleedit.php'><button class='btn btndark'>Schedule Editor</button></a> 
-			<a href='fbsettings.php'><button class='btn btndark'>Settings</button></a> 
-		</td>
-	</tr>
-</table>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-		<tr>
-			<th class="th" colspan="2" align="left">Manual Overrides</th>
-		</tr>
-		<tr>
-			<td colspan="2" class="vncell" style="text-align: left;">
-				<input type="button" class="btn" value="Ring Normal" onclick="ringbell('Normal');" />
-				<input type="button" class="btn" value="Fire Drill" onclick="ringbell('FireDrill');" />
-				<input type="button" class="btn" value="Weather Drill" onclick="ringbell('WeatherDrill');" />
-			</td>
-		</tr>
-	</tbody>
-</table>
+<?php navMenu(); ?>
+				<!-- Actions on this page -->
+				<li class="dropdown">
+					<a class="dropdown-toggle text-left" data-toggle="dropdown" href="#">
+						<span class="glyphicon glyphicon-cog" title="Actions"></span>
+						<span class="hidden-sm" style="margin-left: 5px;">Actions</span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#" onclick="ringbell('Normal');"> Ring Normal</a></li>
+						<li><a href="#" onclick="ringbell('FireDrill');"> Fire Drill</a></li>
+						<li><a href="#" onclick="ringbell('WeatherDrill');"> Weather Drill</a></li>
+						<!--<li role="separator" class="divider"></li>-->
+					</ul>
+				</li>
+<?php navMenuClose(); ?>
 
 <br>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -101,7 +88,7 @@ else {
 
 <div align='center'>
 <br>
-<p>Fusion Bells is developed and provided by FikesMedia</br><img src='img/fikesmedialogo.png' style='height: 28px;'></p>
+<p>Fusion Bells is developed and provided by FikesMedia</br><img src='img/fikesmedialogo.png' style='height: 28px;'> <img src="img/fblogo.png" style="height:28px;"></p>
 </div>
 
 

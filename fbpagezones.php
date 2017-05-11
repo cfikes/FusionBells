@@ -95,9 +95,28 @@ function pullZones(){
 //show the content
 	require_once "resources/header.php";
 	$document['title'] = $text['title-fusionbells'];
+
+?>
+<?php 
+	include "includes.php";
 	echo '<link rel="stylesheet" type="text/css" href="css/overides.css">';
-
-
+?>
+	
+<?php navMenu(); ?>
+				<!-- Actions on this page -->
+				<li class="dropdown">
+					<a class="dropdown-toggle text-left" data-toggle="dropdown" href="#">
+						<span class="glyphicon glyphicon-cog" title="Actions"></span>
+						<span class="hidden-sm" style="margin-left: 5px;">Actions</span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a data-toggle='modal' data-target='#newZoneModal'> New Zone</a></li>
+						<!--<li role="separator" class="divider"></li>-->
+					</ul>
+				</li>
+<?php navMenuClose(); ?>
+	
+	<!--
 	//header
 	echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>";
 	echo "<tr>\n";
@@ -112,7 +131,8 @@ function pullZones(){
 	echo "<a href='fbzonebox.php' class='btn btndark'>ZoneBox</a> ";
 	echo "</td></tr>";	
 	echo "</table>";
-	
+	-->
+<?php	
     pullZones();
 ?>
 

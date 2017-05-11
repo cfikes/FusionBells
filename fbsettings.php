@@ -240,8 +240,17 @@ function pullSettings(){
 	require_once "resources/header.php";
 	$document['title'] = $text['title-fusionbells'];
 	echo '<link rel="stylesheet" type="text/css" href="css/overides.css">';
+?>
 
-
+<?php
+	include "includes.php";
+	echo '<link rel="stylesheet" type="text/css" href="css/overides.css">';
+?>
+	
+<?php navMenu(); ?>
+<?php navMenuClose(); ?>
+	
+	<!--
 	//header
 	echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>";
 	echo "<tr>\n";
@@ -256,7 +265,9 @@ function pullSettings(){
 	echo "<a href='fbzonebox.php' class='btn btndark'>ZoneBox</a> ";
 	echo "</td></tr>";	
 	echo "</table>";
+	-->
 	
+<?php
     pullSettings();
 ?>
 

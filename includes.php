@@ -35,6 +35,40 @@ function selectZone(){
     }
 }
 
+//DrawNavMenu
+function navMenu(){
+	echo '<nav class="navbar navbar-inverse">';
+	echo '<div class="container-fluid" style="width: calc(100% - 20px); padding: 0;">';
+	echo '<div class="navbar-header">';
+	echo '<button type="button" class="navbar-toggle collapsed" style="margin-right: -2%;" data-toggle="collapse" data-target="#second_navbar" aria-expanded="false" aria-controls="navbar">';
+	echo '<span class="sr-only">Toggle navigation</span>';
+	echo '<span class="icon-bar" style="margin-top: 1px;"></span>';
+	echo '<span class="icon-bar"></span>';
+	echo '<span class="icon-bar"></span>';
+	echo '</button>';
+	echo '<a><img id="fb_brand_image" class="navbar-logo" style="margin-right: -2%;" src="img/fblogo.png" title="Fusion Bells"></a>';
+	echo '</div>';
+	echo '<div class="collapse navbar-collapse" id="second_navbar">';
+	echo '<ul class="nav navbar-nav navbar-right">';
+	echo '<li class="dropdown">';
+	echo '<a class="dropdown-toggle text-left" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-send" title="Menu"></span><span class="hidden-sm" style="margin-left: 5px;">Menu</span></a>';
+	echo '<ul class="dropdown-menu">';
+	echo '<li><a href="fusionbells.php"> Dashboard</a></li>';
+	echo '<li><a href="fbschedule.php"> Schedule Calendar</a></li>';
+	echo '<li><a href="fbscheduleedit.php"> Schedule Editor</a></li>';
+	echo '<li role="separator" class="divider"></li>';
+	echo '<li><a href="fbsettings.php"> Settings</a></li>';
+	echo '<li><a href="fbtones.php"> Tone Editor</a></li>';
+	echo '<li><a href="fbpagezones.php"> Zones</a></li>';
+	echo '<li><a href="fbzonebox.php"> ZoneBox</a></li>';
+	echo '</ul></li>';
+}
+
+function navMenuClose(){
+	echo '</ul></div></div></nav>';
+}
+	
+
 //For Calendar View
 function getSchedulesInclude(){
     //Begin Session

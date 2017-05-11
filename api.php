@@ -499,6 +499,8 @@ function createNewSchedule(){
     $name = $_POST['schedulename'];
     //Set first bell to midnight
     $time = "23:59";
+	//Assign All Tone Zone
+	$zone = "All Tone";
     //Check is name is null or blank if true error
     if(is_null($name) || $name == ""){ 
         $returnValue = ['error' => 'no values input for Create New Schedule'];
@@ -514,8 +516,8 @@ function createNewSchedule(){
                 $defaultTone = $row['SettingValue'];
             }
             //Insert new bell at midnight using name from post with default tone
-            $Result = $fusionBellDB->prepare('INSERT INTO schedules (Schedule,Time,Tone) VALUES (?,?,?)');
-            $Result->execute(array($name,$time,$defaultTone));
+            $Result = $fusionBellDB->prepare('INSERT INTO schedules (Schedule,Time,Tone,Zone) VALUES (?,?,?,?)');
+            $Result->execute(array($name,$time,$defaultTone,$zone));
             //Return array as formated JSON
             $returnValue = ['Status' => 'Completed'];
             echo json_encode($returnValue);

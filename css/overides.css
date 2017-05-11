@@ -30,3 +30,8 @@
 .table-borderless > thead > tr > th {
     border: none;
 }
+
+.fbnav ul li {
+	color: #000;
+	background-color: #FFF;
+}

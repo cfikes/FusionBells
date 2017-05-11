@@ -78,7 +78,14 @@ function getSyncLog(){
 	}
 }
 ?>
-	
+<?
+	include "includes.php";
+?>
+
+<?php navMenu(); ?>
+<?php navMenuClose(); ?>
+
+<!--	
 <table width='100%' border='0' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td width='50%'><b>ZoneBox</b><br><br></td>
@@ -88,6 +95,8 @@ function getSyncLog(){
 		</td>
 	</tr>
 </table>
+-->
+
 
 <?php getSyncLog();	?>
 

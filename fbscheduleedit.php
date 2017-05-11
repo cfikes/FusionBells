@@ -77,7 +77,25 @@ else {
 	border: none;
 	}
 </style>
-	
+
+
+
+<?php navMenu(); ?>
+				<!-- Actions on this page -->
+				<li class="dropdown">
+					<a class="dropdown-toggle text-left" data-toggle="dropdown" href="#">
+						<span class="glyphicon glyphicon-cog" title="Actions"></span>
+						<span class="hidden-sm" style="margin-left: 5px;">Actions</span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a data-toggle="modal" data-target="#newScheduleModal"> Add Schedule</a></li>
+						<!--<li role="separator" class="divider"></li>-->
+					</ul>
+				</li>
+<?php navMenuClose(); ?>
+
+
+<!--	
 <table width='100%' border='0' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td width='50%'><b>Schedule Editor</b><br><br></td>
@@ -89,7 +107,7 @@ else {
 		</td>
 	</tr>
 </table>
-
+-->
 
       <div class="row">
 

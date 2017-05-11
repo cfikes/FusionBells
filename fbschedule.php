@@ -78,6 +78,11 @@ require_once "includes.php";
 	}
 </style>
 
+
+<?php navMenu(); ?>
+<?php navMenuClose(); ?>
+
+<!--
 <table width='100%' border='0' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td width='50%'>
@@ -90,7 +95,7 @@ require_once "includes.php";
 		</td>
 	</tr>	
 </table>
-
+-->
 <div class="fusionbellcont">
 	<div class="row">
 		<div class="col-md-2">
