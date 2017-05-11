@@ -1,20 +1,22 @@
-# FusionBells
+![alt text](https://raw.githubusercontent.com/cfikes/FusionBells/master/img/fblogo.png)
 
-Fusion PBX Multicast Bell System
+FusionPBX Multicast Bell System
 
+#  Installation
 
-# For Debian Installations clone into
-/var/www/fusionpbx/app/fusionbells
+For Debian Installations clone into
 
-# Install TTS Engine for TTS Generations
-cat "deb http://ftp.de.debian.org/debian sid main non-free" >> /etc/apt/sources.list
+* /var/www/fusionpbx/app/fusionbells
 
-apt-get update && apt-get -y install libttspico-utils
+Install TTS Engine for TTS Generations
 
+* cat "deb http://ftp.de.debian.org/debian sid main non-free" >> /etc/apt/sources.list
 
-# Add Through FusionPBX a Menu to 
+* apt-get update && apt-get -y install libttspico-utils
 
-app/fusionbells/fusionbells.php
+Add Through FusionPBX a Menu to 
+
+* app/fusionbells/fusionbells.php
 
 # Version 1.0 GUI Demo
 
