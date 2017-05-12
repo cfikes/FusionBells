@@ -218,7 +218,7 @@ function getNextRing($UUID) {
 						$Schedule = $row['Schedule'];
 						$Tone = $row['Tone'];
 						$Time = $row['Time'];
-						$returnJSON[0]=array("Schedule"=>$Schedule,"Time"=>$Time);
+						$returnJSON=array("Schedule"=>$Schedule,"Time"=>$Time);
 					}
 				}
 				//Else Schedule has played out.
@@ -254,6 +254,7 @@ function getNextRing($UUID) {
 				}
 			}
 		}
+		
 		//header('Content-Type: application/json');
 		return $returnJSON;
 	}
