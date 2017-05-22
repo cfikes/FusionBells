@@ -10,13 +10,13 @@ For Debian Installations clone into
 
 Install TTS Engine for TTS Generations
 
-* cat "deb http://ftp.de.debian.org/debian sid main non-free" >> /etc/apt/sources.list
+* cat deb http://ftp.de.debian.org/debian sid main non-free >> /etc/apt/sources.list
 
 * apt-get update && apt-get -y install libttspico-utils
 
 Add Through FusionPBX a Menu to 
 
-* app/fusionbells/fusionbells.php
+* /app/fusionbells/fusionbells.php
 
 # Version 1.0 GUI Demo
 
