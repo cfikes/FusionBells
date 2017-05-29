@@ -8,7 +8,7 @@ For Debian Installations clone into
 
 * /var/www/fusionpbx/app/fusionbells
 
-Fix Permissiona 
+Fix Permissions 
 
 * chown -r www-data:www-data /var/www/fusionpbx/app/fusionbells/*
 * chmod +x /var/www/fusionpbx/app/fusionbells/ffmpeg 
