@@ -293,7 +293,7 @@ function manualBell() {
 				}
 			}
 			//Call System command with specified parameters
-			$exec="./ffmpeg -re -i ./tones/$tone -filter_complex 'aresample=16000,asetnsamples=n=160' -acodec g722 -ac 1 -vn -f rtp udp://$address &"; 
+			$exec="./ffmpeg -re -i ./tones/$UUID/$tone -filter_complex 'aresample=16000,asetnsamples=n=160' -acodec g722 -ac 1 -vn -f rtp udp://$address &"; 
 			exec($exec);
 		}
 	}
@@ -810,7 +810,12 @@ function createNewZone(){
 * 03/03/2017
 */
 function getTones(){
-    $dir = __DIR__ . '/tones';
+	session_start();
+    $UUID = $_SESSION['domain_uuid'];
+    error_log("DEBUG ---------- $UUID");
+	$dir = __DIR__ . "/tones";
+	$dir = $dir . "/$UUID";
+	error_log("DEBUG ---------- $dir");
     $tones = scandir($dir);
     $returnValue = array();
     $i = 0;
@@ -833,8 +838,10 @@ function getTones(){
 * 03/03/2017
 */
 function createTTSTone(){
+    session_start();
+	$UUID = $_SESSION['domain_uuid'];
     //Setup Variables
-    $dir = __DIR__ . '/tones';
+    $dir = __DIR__ . "/tones/$UUID";
     $saveName = $_POST['filename'];
     error_log(" THIS IS THE SAVE DIR  $dir/$saveName");
     $text = $_POST['text'];
@@ -864,7 +871,7 @@ function delTone() {
 	session_start();
     //GET UUID
     $UUID = $_SESSION["domain_uuid"];
-    $dir = __DIR__ . '/tones';
+    $dir = __DIR__ . "/tones/$UUID";
     $file = $_POST['filename'];
     $defaultTone = "";
     try {

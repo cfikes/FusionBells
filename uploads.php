@@ -1,7 +1,9 @@
 <?php
+session_start();
+$UUID = $_SESSION['domain_uuid'];
 $ds = DIRECTORY_SEPARATOR;
  
-$storeFolder = 'tones';
+$storeFolder = "tones/$UUID";
 
 if (!empty($_FILES)) {
     $tempFile = $_FILES['file']['tmp_name'];

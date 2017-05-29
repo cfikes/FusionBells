@@ -77,7 +77,7 @@ if (file_exists("$UUID.db")) {
 				}
 				if ( $Time == $timeNow ) {
 					//Call System command with specified parameters
-					$exec="./ffmpeg -re -i ./tones/$Tone -filter_complex 'aresample=16000,asetnsamples=n=160' -acodec g722 -ac 1 -vn -f rtp udp://$Address &"; 
+					$exec="./ffmpeg -re -i ./tones/$UUID/$Tone -filter_complex 'aresample=16000,asetnsamples=n=160' -acodec g722 -ac 1 -vn -f rtp udp://$Address &"; 
 					exec($exec);
 				}
 			} else {
@@ -104,7 +104,7 @@ if (file_exists("$UUID.db")) {
 						}
 					}
 					//Call System command with specified parameters
-					$exec="./ffmpeg -re -i ./tones/$Tone -filter_complex 'aresample=16000,asetnsamples=n=160' -acodec g722 -ac 1 -vn -f rtp udp://$Address &"; 
+					$exec="./ffmpeg -re -i ./tones/$UUID/$Tone -filter_complex 'aresample=16000,asetnsamples=n=160' -acodec g722 -ac 1 -vn -f rtp udp://$Address &"; 
 					exec($exec);
 				} else {
 					echo "NOTING SETUP FOR THIS MOMENT\n";

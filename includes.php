@@ -1,6 +1,6 @@
 <?php
 
-function selectTone(){
+function selectToneOLD(){
     $dir = __DIR__ . '/tones';
     $tones = scandir($dir);
     foreach($tones as $key => $value) {
@@ -8,6 +8,27 @@ function selectTone(){
             echo '<option value="'. $value . '">'. $value . '</option>';
         }
     }
+}
+
+function selectTone(){
+	$UUID = $_SESSION["domain_uuid"];
+	$dir = __DIR__ . "/tones/$UUID";
+	$tones = scandir($dir);
+	foreach($tones as $key => $value) {
+		if(!is_dir("$dir/$value")) {
+			echo '<option value="' . $value . '">'. $value . '</option>';
+		}
+	}
+}
+
+//Copy Tones into private DIR
+function copyTones(){
+	$UUID = $_SESSION["domain_uuid"];
+	$dir = __DIR__ . "/tones/$UUID";
+	mkdir("tones/$UUID");
+	copy("tones/DefaultTone.wav","tones/$UUID/DefaultTone.wav");
+	copy("tones/FireDrill.wav","tones/$UUID/FireDrill.wav");
+	copy("tones/WeatherDrill.wav","tones/$UUID/WeatherDrill.wav");
 }
 
 function selectZone(){
@@ -130,6 +151,7 @@ function domainDB(){
 			//Added for Zoning
 			$fusionBellDB->exec("INSERT INTO zones (ZoneName,ZoneValue) VALUES ('All Tone','239.255.0.1:4100')");
 			$fusionBellDB->exec("INSERT INTO zones (ZoneName,ZoneValue) VALUES ('Sample Zone','239.255.0.1:4101')");
+			copyTones();
 		}
 		//Issues connecting
 		catch (PDOException $e) {
