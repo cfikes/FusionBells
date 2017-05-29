@@ -8,6 +8,11 @@ For Debian Installations clone into
 
 * /var/www/fusionpbx/app/fusionbells
 
+Fix Permissiona 
+
+* chown -r www-data:www-data /var/www/fusionpbx/app/fusionbells/*
+* chmod +x /var/www/fusionpbx/app/fusionbells/ffmpeg 
+
 Install TTS Engine for TTS Generations
 
 * cat deb http://ftp.de.debian.org/debian sid main non-free >> /etc/apt/sources.list
