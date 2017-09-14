@@ -10,7 +10,7 @@ For Debian Installations clone into
 
 Fix Permissions 
 
-* chown -r www-data:www-data /var/www/fusionpbx/app/fusionbells/*
+* chown -R www-data:www-data /var/www/fusionpbx/app/fusionbells/*
 * chmod +x /var/www/fusionpbx/app/fusionbells/ffmpeg 
 
 Install TTS Engine for TTS Generations
