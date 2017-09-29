@@ -163,6 +163,7 @@ else {
 <script src="js/dropzone.js"></script>
 
 <script>
+<?php echo 'var UUID="' . $_SESSION["domain_uuid"] . '";'; ?>
 
 /*
 * Creates listing of files
@@ -268,7 +269,7 @@ Dropzone.options.toneDropZone = {
 
 //Preview File
 $(document).on( "click", "#filelisting tr", function() {
-    var fileName = "tones/"+this.getAttribute("id");
+    var fileName = "tones/"+UUID+"/"+this.getAttribute("id");
     $("#previewtitle").html(this.getAttribute("id"));
     $("#delmodaltone").val(this.getAttribute("id"));
     $("#tonepreview").attr("src",fileName).trigger("play");
