@@ -6,16 +6,17 @@ FusionPBX Multicast Bell System
 
 For Debian Installations clone into
 
-* /var/www/fusionpbx/app/fusionbells
+* cd /var/www/fusionpbx/app
+* git clone https://github.com/cfikes/FusionBells fusionbells
 
 Fix Permissions 
 
-* chown -R www-data:www-data /var/www/fusionpbx/app/fusionbells/*
+* chown -R www-data:www-data /var/www/fusionpbx/app/fusionbells
 * chmod +x /var/www/fusionpbx/app/fusionbells/ffmpeg 
 
 Install TTS Engine for TTS Generations
 
-* cat deb http://ftp.de.debian.org/debian sid main non-free >> /etc/apt/sources.list
+* echo "deb http://ftp.de.debian.org/debian sid main non-free" >> /etc/apt/sources.list
 
 * apt-get update && apt-get -y install libttspico-utils
 
