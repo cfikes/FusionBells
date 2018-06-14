@@ -18,20 +18,24 @@ then
     # Give Instructions on adding Menu
     echo "Log into FusionPBX and select Advanced -> Menu Manager -> default"
     echo "Click + and enter the following information."
+    echo " "
+    echo "-------------------IMPORTANT------------------"
     echo "Title:       FusionBells"
     echo "Link:        /app/fusionbells/fusionbells.php"
     echo "Target:      Internal"
     echo "Icon:        Bell"
     echo "Parent Menu: Home"
-    echo" Groups:      superadmin, admin"
+    echo "Groups:      superadmin, admin"
+    echo "----------------------------------------------"
     echo " "
     echo "Installation Complete"
+    echo " "
     read -p "Add cron job for bell? " -n 1 -r
     if [[ $REPLY =~ ^[Yy]$ ]] 
     then
       echo "# FikesMedia FusionBells Zone Ringer" >> /etc/cron.d/fusionbells
       echo "* * * * * root bash /var/www/fusionpbx/app/fusionbells/CRON-Ring.sh" >> /etc/cron.d/fusionbells
-      echo "Cron Job Installed"
-      cat /etc/cron.d/fusionbells
+      echo " "
+      echo "Cron Job Installed."
     fi
 fi
