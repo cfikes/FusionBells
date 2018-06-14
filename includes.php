@@ -26,6 +26,7 @@ function copyTones(){
 	$UUID = $_SESSION["domain_uuid"];
 	$dir = __DIR__ . "/tones/$UUID";
 	mkdir("tones/$UUID");
+	copy("tones/Silence.wav","tones/$UUID/Silence.wav");
 	copy("tones/DefaultTone.wav","tones/$UUID/DefaultTone.wav");
 	copy("tones/FireDrill.wav","tones/$UUID/FireDrill.wav");
 	copy("tones/WeatherDrill.wav","tones/$UUID/WeatherDrill.wav");
