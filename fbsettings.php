@@ -70,7 +70,7 @@ function pullSettings(){
 						//Bell Tones need to be selected from the FS. Scans the FS for tone files
 						//and creates the select group selecting the default if one found.
 						case 'Bell Tone' :
-							$dir = __DIR__ . '/tones';
+							$dir = __DIR__ . '/tones/' . $_SESSION["domain_uuid"];
 							$tones = scandir($dir);
 							echo '<tr><td width="20%" class="vncell" style="text-align: left;">' . $SettingName . '</td><td class="row_style1">';
 							echo '<select name="'. $SettingName .'" class="form-control">';
@@ -116,7 +116,7 @@ function pullSettings(){
 						//Tones need to be selected from the FS. Scans the FS for tone files
 						//and creates the select group selecting the default if one found.
 						case 'Fire Drill Tone' :
-							$dir = __DIR__ . '/tones';
+							$dir = __DIR__ . '/tones/' . $_SESSION["domain_uuid"];
 							$tones = scandir($dir);
 							echo '<tr><td width="20%" class="vncell" style="text-align: left;">' . $SettingName . '</td><td class="row_style1">';
 							echo '<select name="'. $SettingName .'" class="form-control">';
@@ -137,7 +137,7 @@ function pullSettings(){
 						//Tones need to be selected from the FS. Scans the FS for tone files
 						//and creates the select group selecting the default if one found.
 						case 'Fire Tone' :
-							$dir = __DIR__ . '/tones';
+							$dir = __DIR__ . '/tones/' . $_SESSION["domain_uuid"];
 							$tones = scandir($dir);
 							echo '<tr><td width="20%" class="vncell" style="text-align: left;">' . $SettingName . '</td><td class="row_style1">';
 							echo '<select name="'. $SettingName .'" class="form-control">';
@@ -158,7 +158,7 @@ function pullSettings(){
 						//Tones need to be selected from the FS. Scans the FS for tone files
 						//and creates the select group selecting the default if one found.
 						case 'Weather Drill Tone' :
-							$dir = __DIR__ . '/tones';
+							$dir = __DIR__ . '/tones/' . $_SESSION["domain_uuid"];
 							$tones = scandir($dir);
 							echo '<tr><td width="20%" class="vncell" style="text-align: left;">' . $SettingName . '</td><td class="row_style1">';
 							echo '<select name="'. $SettingName .'" class="form-control">';
@@ -179,7 +179,7 @@ function pullSettings(){
 						//Tones need to be selected from the FS. Scans the FS for tone files
 						//and creates the select group selecting the default if one found.
 						case 'Weather Tone' :
-							$dir = __DIR__ . '/tones';
+							$dir = __DIR__ . '/tones/' . $_SESSION["domain_uuid"];
 							$tones = scandir($dir);
 							echo '<tr><td width="20%" class="vncell" style="text-align: left;">' . $SettingName . '</td><td class="row_style1">';
 							echo '<select name="'. $SettingName .'" class="form-control">';
